@@ -1,10 +1,148 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sistemas Leão do Parque</title>
+  <meta name="description" content="Menu com todos os sistemas da padaria">
+  <meta name="theme-color" content="#7c2d12">
+  <link rel="icon" href="icone.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icone-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Sistemas Leão">
+  <style>
+    :root {
+      --bg: #faf6f1;
+      --card: #ffffff;
+      --text: #2b1d14;
+      --muted: #7a6656;
+      --line: #eadfd3;
+      --accent: #7c2d12;
+      --shadow: 0 1px 2px rgba(60, 30, 10, .06), 0 4px 16px rgba(60, 30, 10, .06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #17110d;
+        --card: #221a14;
+        --text: #f3e9df;
+        --muted: #b39f8d;
+        --line: #3a2d23;
+        --accent: #f59e6b;
+        --shadow: none;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.4;
+      min-height: 100vh;
+      padding: max(24px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+    }
+    main { max-width: 880px; margin: 0 auto; }
+    header { display: flex; align-items: center; gap: 14px; margin: 8px 0 28px; }
+    header img { width: 48px; height: 48px; border-radius: 12px; }
+    h1 { font-size: 1.5rem; margin: 0; letter-spacing: -.01em; }
+    header p { margin: 2px 0 0; color: var(--muted); font-size: .95rem; }
+    h2 {
+      font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); margin: 28px 0 12px; font-weight: 600;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+    .card {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 16px; color: inherit; text-decoration: none; box-shadow: var(--shadow);
+      transition: transform .12s ease, border-color .12s ease;
+      min-height: 76px;
+    }
+    a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    a.card:active { transform: scale(.98); }
+    a.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .ico {
+      flex: none; width: 44px; height: 44px; border-radius: 11px;
+      display: grid; place-items: center; color: #fff;
+    }
+    .ico svg { width: 24px; height: 24px; }
+    .card b { display: block; font-size: 1.02rem; }
+    .card span { display: block; color: var(--muted); font-size: .86rem; }
+    .card.off { opacity: .55; box-shadow: none; border-style: dashed; }
+    .tag {
+      display: inline-block; margin-left: 6px; font-size: .7rem; font-weight: 600;
+      padding: 1px 6px; border-radius: 6px; background: var(--line); color: var(--muted);
+      vertical-align: 2px;
+    }
+    footer { margin-top: 36px; color: var(--muted); font-size: .8rem; text-align: center; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icone.svg" alt="">
+    <div>
+      <h1>Sistemas Leão do Parque</h1>
+      <p>Toque num sistema para abrir.</p>
+    </div>
+  </header>
 
-  </body>
+  <h2>Sistemas</h2>
+  <div class="grid" id="sistemas"></div>
+
+  <h2>Ferramentas no Claude <span class="tag">só o Adrian</span></h2>
+  <div class="grid" id="artefatos"></div>
+
+  <footer>Cada sistema tem o seu próprio login.</footer>
+</main>
+
+<script>
+  // Para incluir um sistema novo, basta acrescentar uma linha aqui.
+  const ICONES = {
+    pix: '<path d="M12 3 3 12l9 9 9-9-9-9Z"/><path d="m8 12 4-4 4 4-4 4-4-4Z"/>',
+    calendario: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    pessoas: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.5a5 5 0 0 1 5.5 5"/>',
+    tablet: '<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/>',
+    nota: '<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/>',
+    ferramenta: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/>',
+    rh: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+    lupa: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
+  };
+
+  const SISTEMAS = [
+    { nome: 'Quadro de PIX', desc: 'Conferência dos PIX', url: '/quadro-pix/', icone: 'pix', cor: '#047857' },
+    { nome: 'Eventos', desc: 'Encomendas e eventos', url: '/eventos-leao/', icone: 'calendario', cor: '#b45309' },
+    { nome: 'Folgas e extras', desc: 'Escala da equipe', url: '/folgas-leao/', icone: 'pessoas', cor: '#1d4ed8' },
+    { nome: 'Tablet', desc: 'Consulta de produtos', url: '/Tablet-Pesquisas/', icone: 'tablet', cor: '#c84f22' },
+    { nome: 'Empresas faturadas', desc: 'Notas e faturamento', url: '/empresas-faturadas-online/', icone: 'nota', cor: '#6d28d9' },
+    { nome: 'Sistema de RH', desc: 'Em breve', icone: 'rh', cor: '#64748b', emBreve: true }
+  ];
+
+  const ARTEFATOS = [
+    { nome: 'Manutenções', desc: 'Manutenções das casas', url: 'https://claude.ai/artifact/G2CSSg5YdWeZRZZqjycQF3', icone: 'ferramenta', cor: '#0e7490' },
+    { nome: 'Controle NCM', desc: 'Importação manual', url: 'https://claude.ai/artifact/E16oMEuU6VkVFdrk9oYPZv', icone: 'lupa', cor: '#a16207' }
+  ];
+
+  function cartao(s) {
+    const el = document.createElement(s.emBreve ? 'div' : 'a');
+    el.className = 'card' + (s.emBreve ? ' off' : '');
+    if (!s.emBreve) {
+      el.href = s.url;
+      if (s.url.startsWith('http')) { el.target = '_blank'; el.rel = 'noopener'; }
+    }
+    el.innerHTML =
+      '<div class="ico" style="background:' + s.cor + '">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      ICONES[s.icone] + '</svg></div>' +
+      '<div><b></b><span></span></div>';
+    el.querySelector('b').textContent = s.nome;
+    el.querySelector('span').textContent = s.desc;
+    return el;
+  }
+
+  SISTEMAS.forEach(s => document.getElementById('sistemas').appendChild(cartao(s)));
+  ARTEFATOS.forEach(s => document.getElementById('artefatos').appendChild(cartao(s)));
+</script>
+</body>
 </html>
