@@ -215,7 +215,7 @@
   <section aria-labelledby="t-claude">
     <div class="secao-titulo">
       <h2 id="t-claude">No Claude</h2>
-      <p>Abrem só com a conta do Adrian.</p>
+      <p>Abrem no Claude, com uma conta que tenha acesso.</p>
     </div>
     <ul class="grade" id="artefatos"></ul>
   </section>
@@ -233,7 +233,8 @@
     nota: '<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/>',
     ferramenta: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/>',
     rh: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
-    lupa: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
+    lupa: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    conferir: '<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="m9 15 2.2 2.2L15.5 13"/>'
   };
 
   const SISTEMAS = [
@@ -271,6 +272,18 @@
   ];
 
   const ARTEFATOS = [
+    {
+      nome: 'Notas · Churrascaria Leão', icone: 'conferir', cor: '#155e75',
+      url: 'https://claude.ai/artifact/NjudyFBsyStwqYTwFqWopy',
+      resumo: 'Conferência das notas de compra.',
+      detalhe: 'No recebimento, tire a foto da nota e a página confere NCM, CFOP, CST/CSOSN e ICMS de cada produto. Guarda o histórico das notas conferidas.'
+    },
+    {
+      nome: 'Notas · Padaria Gaúcha Centro', icone: 'conferir', cor: '#9d174d',
+      url: 'https://claude.ai/artifact/KwX9f3v2kaK5j3CUXkTWxe',
+      resumo: 'Conferência das notas de compra.',
+      detalhe: 'No recebimento, tire a foto da nota e a página confere NCM, CFOP, CST/CSOSN e ICMS de cada produto. Guarda o histórico das notas conferidas.'
+    },
     {
       nome: 'Manutenções', icone: 'ferramenta', cor: '#0e7490',
       url: 'https://claude.ai/artifact/G2CSSg5YdWeZRZZqjycQF3',
