@@ -98,6 +98,30 @@
     }
     .secao-titulo p { margin: 0; color: var(--text-3); font-size: .9rem; }
 
+    /* Botão de minimizar: o próprio título da seção */
+    .alternar {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: inherit; color: inherit; letter-spacing: inherit;
+      background: none; border: 0; cursor: pointer;
+      padding: 6px 10px; margin: -6px -10px; border-radius: 10px;
+      transition: background-color .2s var(--ease-out);
+    }
+    .alternar:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
+    .alternar:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+    .alternar .chevron {
+      width: 18px; height: 18px; color: var(--text-3); flex: none;
+      transition: transform .3s var(--ease-out);
+    }
+    .alternar[aria-expanded="false"] .chevron { transform: rotate(-90deg); }
+    .contagem {
+      font: 600 .74rem/1 var(--sans); letter-spacing: .01em;
+      padding: 4px 8px; border-radius: 999px;
+      background: var(--line); color: var(--text-2);
+    }
+    .alternar[aria-expanded="true"] .contagem { display: none; }
+    section.fechada .secao-titulo { margin-bottom: 0; }
+    .grade[hidden] { display: none; }
+
     .grade {
       display: grid; gap: 12px;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
@@ -204,17 +228,17 @@
     </div>
   </header>
 
-  <section aria-labelledby="t-sistemas">
+  <section aria-labelledby="t-sistemas" data-secao="sistemas">
     <div class="secao-titulo">
-      <h2 id="t-sistemas">Sistemas da casa</h2>
+      <h2 id="t-sistemas"><button type="button" class="alternar" aria-expanded="true" aria-controls="sistemas">Sistemas da casa</button></h2>
       <p>Cada um tem o seu próprio login.</p>
     </div>
     <ul class="grade" id="sistemas"></ul>
   </section>
 
-  <section aria-labelledby="t-claude">
+  <section aria-labelledby="t-claude" data-secao="artefatos">
     <div class="secao-titulo">
-      <h2 id="t-claude">No Claude</h2>
+      <h2 id="t-claude"><button type="button" class="alternar" aria-expanded="true" aria-controls="artefatos">No Claude</button></h2>
       <p>Abrem no Claude, com uma conta que tenha acesso.</p>
     </div>
     <ul class="grade" id="artefatos"></ul>
@@ -359,6 +383,40 @@
 
   SISTEMAS.forEach((s, i) => document.getElementById('sistemas').appendChild(cartao(s, i)));
   ARTEFATOS.forEach((s, i) => document.getElementById('artefatos').appendChild(cartao(s, i + SISTEMAS.length)));
+
+  // Minimizar seções: o navegador lembra quais ficaram fechadas.
+  const CHAVE = 'menu-secoes-fechadas';
+  function lerFechadas() {
+    try { return JSON.parse(localStorage.getItem(CHAVE)) || []; } catch (e) { return []; }
+  }
+  function salvarFechadas(lista) {
+    try { localStorage.setItem(CHAVE, JSON.stringify(lista)); } catch (e) { /* sem armazenamento: só não lembra */ }
+  }
+  const CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  const fechadas = new Set(lerFechadas());
+
+  document.querySelectorAll('section[data-secao]').forEach(sec => {
+    const id = sec.dataset.secao;
+    const botao = sec.querySelector('.alternar');
+    const grade = document.getElementById(id);
+    const qtd = grade.children.length;
+    botao.insertAdjacentHTML('afterbegin', CHEVRON);
+    botao.insertAdjacentHTML('beforeend', '<span class="contagem">' + qtd + (qtd === 1 ? ' item' : ' itens') + '</span>');
+
+    function aplicar(fechada) {
+      botao.setAttribute('aria-expanded', String(!fechada));
+      grade.hidden = fechada;
+      sec.classList.toggle('fechada', fechada);
+    }
+    aplicar(fechadas.has(id));
+
+    botao.addEventListener('click', () => {
+      const fechar = botao.getAttribute('aria-expanded') === 'true';
+      if (fechar) fechadas.add(id); else fechadas.delete(id);
+      salvarFechadas([...fechadas]);
+      aplicar(fechar);
+    });
+  });
 
   document.getElementById('hoje').textContent = new Date().toLocaleDateString('pt-BR', {
     weekday: 'long', day: 'numeric', month: 'long'
