@@ -5,100 +5,226 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sistemas Leão do Parque</title>
   <meta name="description" content="Menu com todos os sistemas da padaria">
-  <meta name="theme-color" content="#7c2d12">
+  <meta name="theme-color" content="#f7f1e8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16110d" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="icone.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icone-192.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Sistemas Leão">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible+Next:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #faf6f1;
-      --card: #ffffff;
-      --text: #2b1d14;
-      --muted: #7a6656;
-      --line: #eadfd3;
-      --accent: #7c2d12;
-      --shadow: 0 1px 2px rgba(60, 30, 10, .06), 0 4px 16px rgba(60, 30, 10, .06);
+      --bg: #f7f1e8;
+      --surface: #fffdf9;
+      --surface-hover: #fff8ef;
+      --text: #2a1c12;
+      --text-2: #5e4a3a;
+      --text-3: #7d6756;
+      --line: #e6d9c8;
+      --line-strong: #cdb69c;
+      --brand: #8a3412;
+      --brand-ink: #fff4ea;
+      --focus: #c2410c;
+      --lift: 0 2px 4px rgba(70, 35, 10, .05), 0 10px 24px -8px rgba(70, 35, 10, .16);
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --display: "Young Serif", Georgia, serif;
+      --sans: "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #17110d;
-        --card: #221a14;
-        --text: #f3e9df;
-        --muted: #b39f8d;
-        --line: #3a2d23;
-        --accent: #f59e6b;
-        --shadow: none;
+        --bg: #16110d;
+        --surface: #201914;
+        --surface-hover: #271f19;
+        --text: #f4ebe1;
+        --text-2: #cdbcab;
+        --text-3: #a8927f;
+        --line: #352a21;
+        --line-strong: #5a4636;
+        --brand: #f0a070;
+        --brand-ink: #2a1408;
+        --focus: #f6b48a;
+        --lift: 0 2px 4px rgba(0, 0, 0, .25), 0 12px 28px -10px rgba(0, 0, 0, .55);
+        color-scheme: dark;
       }
     }
+
     * { box-sizing: border-box; }
-    html, body { margin: 0; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
+      margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.4;
+      font: 400 1rem/1.5 var(--sans);
       min-height: 100vh;
-      padding: max(24px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
+      padding:
+        max(28px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(40px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+      -webkit-font-smoothing: antialiased;
     }
-    main { max-width: 880px; margin: 0 auto; }
-    header { display: flex; align-items: center; gap: 14px; margin: 8px 0 28px; }
-    header img { width: 48px; height: 48px; border-radius: 12px; }
-    h1 { font-size: 1.5rem; margin: 0; letter-spacing: -.01em; }
-    header p { margin: 2px 0 0; color: var(--muted); font-size: .95rem; }
+    ::selection { background: var(--brand); color: var(--brand-ink); }
+    html { scrollbar-color: var(--line-strong) transparent; }
+
+    main { max-width: 960px; margin: 0 auto; }
+
+    /* Cabeçalho */
+    .topo {
+      display: flex; align-items: center; gap: 16px;
+      padding-bottom: 28px; margin-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .topo img { width: 52px; height: 52px; border-radius: 14px; flex: none; }
+    .topo h1 {
+      font: 400 clamp(1.75rem, 1.3rem + 1.8vw, 2.4rem)/1.1 var(--display);
+      letter-spacing: -.02em; margin: 0; text-wrap: balance;
+    }
+    .topo p { margin: 4px 0 0; color: var(--text-2); }
+    .topo time::first-letter { text-transform: uppercase; }
+
+    /* Seções */
+    section { margin-top: 36px; }
+    .secao-titulo {
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+      margin: 0 0 14px;
+    }
     h2 {
-      font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
-      color: var(--muted); margin: 28px 0 12px; font-weight: 600;
+      font: 400 1.4rem/1.2 var(--display);
+      letter-spacing: -.01em; margin: 0;
     }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
-    .card {
-      display: flex; align-items: center; gap: 14px;
-      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-      padding: 16px; color: inherit; text-decoration: none; box-shadow: var(--shadow);
-      transition: transform .12s ease, border-color .12s ease;
-      min-height: 76px;
+    .secao-titulo p { margin: 0; color: var(--text-3); font-size: .9rem; }
+
+    .grade {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+      list-style: none; margin: 0; padding: 0;
     }
-    a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
-    a.card:active { transform: scale(.98); }
-    a.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .grade > li { display: flex; }
+
+    /* Cartão */
+    .cartao {
+      position: relative;
+      display: grid; grid-template-columns: 44px 1fr; gap: 4px 14px;
+      grid-template-rows: auto auto 1fr auto;
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+      transition: border-color .2s var(--ease-out), background-color .2s var(--ease-out),
+                  box-shadow .25s var(--ease-out), transform .25s var(--ease-out);
+    }
+    .cartao:has(.principal:hover) {
+      border-color: var(--line-strong); background: var(--surface-hover);
+      box-shadow: var(--lift); transform: translateY(-2px);
+    }
+    .cartao:has(.principal:active) { transform: translateY(0) scale(.99); box-shadow: none; }
+    .cartao:has(.principal:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+
     .ico {
-      flex: none; width: 44px; height: 44px; border-radius: 11px;
-      display: grid; place-items: center; color: #fff;
+      grid-row: span 2;
+      width: 44px; height: 44px; border-radius: 12px;
+      display: grid; place-items: center;
+      color: var(--c);
+      background: color-mix(in srgb, var(--c) 13%, var(--surface));
     }
-    .ico svg { width: 24px; height: 24px; }
-    .card b { display: block; font-size: 1.02rem; }
-    .card span { display: block; color: var(--muted); font-size: .86rem; }
-    .card.off { opacity: .55; box-shadow: none; border-style: dashed; }
-    .tag {
-      display: inline-block; margin-left: 6px; font-size: .7rem; font-weight: 600;
-      padding: 1px 6px; border-radius: 6px; background: var(--line); color: var(--muted);
-      vertical-align: 2px;
+    @media (prefers-color-scheme: dark) {
+      .ico {
+        color: color-mix(in srgb, var(--c) 55%, white);
+        background: color-mix(in srgb, var(--c) 26%, var(--surface));
+      }
     }
-    footer { margin-top: 36px; color: var(--muted); font-size: .8rem; text-align: center; }
+    .ico svg { width: 22px; height: 22px; }
+
+    .cartao h3 {
+      margin: 0; font: 600 1.06rem/1.3 var(--sans); letter-spacing: -.005em;
+      display: flex; align-items: center; gap: 6px; padding-top: 1px;
+    }
+    .principal { color: inherit; text-decoration: none; outline: none; }
+    .principal::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+    .seta {
+      width: 16px; height: 16px; color: var(--text-3); flex: none;
+      transition: transform .25s var(--ease-out), color .2s;
+    }
+    .cartao:has(.principal:hover) .seta { transform: translateX(3px); color: var(--brand); }
+
+    .resumo { margin: 0; color: var(--text-2); font-size: .94rem; font-weight: 500; }
+    .detalhe {
+      grid-column: 1 / -1; align-self: start;
+      margin: 10px 0 0; padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      color: var(--text-3); font-size: .9rem; line-height: 1.55;
+    }
+    .extra {
+      grid-column: 1 / -1; justify-self: start;
+      position: relative; z-index: 1;
+      margin-top: 10px; padding: 6px 10px; margin-left: -10px; margin-bottom: -6px;
+      border-radius: 8px;
+      color: var(--brand); font-size: .88rem; font-weight: 600;
+      text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
+    }
+    .extra:hover { background: color-mix(in srgb, var(--brand) 10%, transparent); }
+    .extra:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+    .cartao.breve { background: transparent; border-style: dashed; }
+    .cartao.breve .ico { color: var(--text-3); background: var(--line); }
+    .cartao.breve h3 { color: var(--text-2); }
+    .selo {
+      font: 600 .72rem/1 var(--sans); letter-spacing: .02em;
+      padding: 4px 7px; border-radius: 6px;
+      background: var(--line); color: var(--text-2);
+    }
+
+    footer {
+      margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--line);
+      color: var(--text-3); font-size: .86rem;
+    }
+
+    /* Entrada: um único movimento, cartões já visíveis por padrão */
+    @media (prefers-reduced-motion: no-preference) {
+      .grade > li { animation: subir .6s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 45ms); }
+      @keyframes subir { from { opacity: 0; transform: translateY(8px); } }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cartao, .seta { transition: none; }
+    }
   </style>
 </head>
 <body>
 <main>
-  <header>
-    <img src="icone.svg" alt="">
+  <header class="topo">
+    <img src="icone.svg" alt="" width="52" height="52">
     <div>
       <h1>Sistemas Leão do Parque</h1>
-      <p>Toque num sistema para abrir.</p>
+      <p><time id="hoje"></time></p>
     </div>
   </header>
 
-  <h2>Sistemas</h2>
-  <div class="grid" id="sistemas"></div>
+  <section aria-labelledby="t-sistemas">
+    <div class="secao-titulo">
+      <h2 id="t-sistemas">Sistemas da casa</h2>
+      <p>Cada um tem o seu próprio login.</p>
+    </div>
+    <ul class="grade" id="sistemas"></ul>
+  </section>
 
-  <h2>Ferramentas no Claude <span class="tag">só o Adrian</span></h2>
-  <div class="grid" id="artefatos"></div>
+  <section aria-labelledby="t-claude">
+    <div class="secao-titulo">
+      <h2 id="t-claude">No Claude</h2>
+      <p>Abrem só com a conta do Adrian.</p>
+    </div>
+    <ul class="grade" id="artefatos"></ul>
+  </section>
 
-  <footer>Cada sistema tem o seu próprio login.</footer>
+  <footer>Para instalar no celular: abra este site e toque em “Adicionar à tela inicial”.</footer>
 </main>
 
 <script>
-  // Para incluir um sistema novo, basta acrescentar uma linha aqui.
+  // Para incluir um sistema novo, acrescente um item na lista.
   const ICONES = {
     pix: '<path d="M12 3 3 12l9 9 9-9-9-9Z"/><path d="m8 12 4-4 4 4-4 4-4-4Z"/>',
     calendario: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -111,38 +237,102 @@
   };
 
   const SISTEMAS = [
-    { nome: 'Quadro de PIX', desc: 'Conferência dos PIX', url: '/quadro-pix/', icone: 'pix', cor: '#047857' },
-    { nome: 'Eventos', desc: 'Encomendas e eventos', url: '/eventos-leao/', icone: 'calendario', cor: '#b45309' },
-    { nome: 'Folgas e extras', desc: 'Escala da equipe', url: '/folgas-leao/', icone: 'pessoas', cor: '#1d4ed8' },
-    { nome: 'Tablet', desc: 'Consulta de produtos', url: '/Tablet-Pesquisas/', icone: 'tablet', cor: '#c84f22' },
-    { nome: 'Empresas faturadas', desc: 'Notas e faturamento', url: '/empresas-faturadas-online/', icone: 'nota', cor: '#6d28d9' },
-    { nome: 'Sistema de RH', desc: 'Em breve', icone: 'rh', cor: '#64748b', emBreve: true }
+    {
+      nome: 'Quadro de PIX', icone: 'pix', cor: '#047857', url: '/quadro-pix/',
+      resumo: 'PIX a pagar de cada casa.',
+      detalhe: 'Leão do Parque, Pier 49, Padaria Centro e Cassino entram com a sua senha e lançam os PIX. O chefe marca o que foi pago e vê o relatório e o histórico.'
+    },
+    {
+      nome: 'Eventos', icone: 'calendario', cor: '#b45309', url: '/eventos-leao/',
+      resumo: 'Agenda de eventos do restaurante.',
+      detalhe: 'Calendário do mês com cliente, tipo e valores de cada evento, relatório do mês e aviso dos eventos que já passaram e ainda não foram concluídos.'
+    },
+    {
+      nome: 'Folgas e extras', icone: 'pessoas', cor: '#1d4ed8', url: '/folgas-leao/',
+      resumo: 'Escala semanal da churrascaria.',
+      detalhe: 'Quem folga, quem cobre e os extras chamados em cada dia, com as diárias e o Pix de cada um. Gera a escala da semana pronta para o WhatsApp.'
+    },
+    {
+      nome: 'Tablet', icone: 'tablet', cor: '#c2410c', url: '/Tablet-Pesquisas/',
+      resumo: 'Catálogo de produtos para o balcão.',
+      detalhe: 'Busca por nome ou código, filtro por categoria e foto de cada produto. Tocar no produto mostra o código em tamanho grande.',
+      extra: { texto: 'Cadastro de produtos', url: '/Tablet-Pesquisas/admin.html' }
+    },
+    {
+      nome: 'Empresas faturadas', icone: 'nota', cor: '#6d28d9', url: '/empresas-faturadas-online/',
+      resumo: 'Faturamento mensal das empresas.',
+      detalhe: 'Importa as notas, acompanha cada etapa do faturamento e os pagamentos, guarda os comprovantes e prepara a mensagem de cobrança para o WhatsApp.'
+    },
+    {
+      nome: 'Sistema de RH', icone: 'rh', breve: true,
+      resumo: 'Em construção.',
+      detalhe: 'Vai aparecer aqui quando estiver pronto.'
+    }
   ];
 
   const ARTEFATOS = [
-    { nome: 'Manutenções', desc: 'Manutenções das casas', url: 'https://claude.ai/artifact/G2CSSg5YdWeZRZZqjycQF3', icone: 'ferramenta', cor: '#0e7490' },
-    { nome: 'Controle NCM', desc: 'Importação manual', url: 'https://claude.ai/artifact/E16oMEuU6VkVFdrk9oYPZv', icone: 'lupa', cor: '#a16207' }
+    {
+      nome: 'Manutenções', icone: 'ferramenta', cor: '#0e7490',
+      url: 'https://claude.ai/artifact/G2CSSg5YdWeZRZZqjycQF3',
+      resumo: 'Manutenções das casas.',
+      detalhe: 'Lista do que precisa de conserto em cada casa e o andamento de cada serviço.'
+    },
+    {
+      nome: 'Controle NCM', icone: 'lupa', cor: '#a16207',
+      url: 'https://claude.ai/artifact/E16oMEuU6VkVFdrk9oYPZv',
+      resumo: 'Revisão dos NCM da Padaria Gaúcha.',
+      detalhe: 'Confere a classificação fiscal dos produtos. Os dados entram por importação manual, sem chave de API.'
+    }
   ];
 
-  function cartao(s) {
-    const el = document.createElement(s.emBreve ? 'div' : 'a');
-    el.className = 'card' + (s.emBreve ? ' off' : '');
-    if (!s.emBreve) {
-      el.href = s.url;
-      if (s.url.startsWith('http')) { el.target = '_blank'; el.rel = 'noopener'; }
-    }
-    el.innerHTML =
-      '<div class="ico" style="background:' + s.cor + '">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      ICONES[s.icone] + '</svg></div>' +
-      '<div><b></b><span></span></div>';
-    el.querySelector('b').textContent = s.nome;
-    el.querySelector('span').textContent = s.desc;
-    return el;
+  const SETA = '<svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  function svg(nome) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES[nome] + '</svg>';
   }
 
-  SISTEMAS.forEach(s => document.getElementById('sistemas').appendChild(cartao(s)));
-  ARTEFATOS.forEach(s => document.getElementById('artefatos').appendChild(cartao(s)));
+  function cartao(s, i) {
+    const li = document.createElement('li');
+    li.style.setProperty('--i', i);
+    const externo = s.url && s.url.startsWith('http');
+    li.innerHTML =
+      '<article class="cartao' + (s.breve ? ' breve' : '') + '">' +
+        '<div class="ico">' + svg(s.icone) + '</div>' +
+        '<h3></h3>' +
+        '<p class="resumo"></p>' +
+        '<p class="detalhe"></p>' +
+      '</article>';
+    const card = li.firstChild;
+    if (s.cor) card.style.setProperty('--c', s.cor);
+    const h3 = card.querySelector('h3');
+    if (s.breve) {
+      h3.textContent = s.nome;
+      const selo = document.createElement('span');
+      selo.className = 'selo'; selo.textContent = 'Em breve';
+      h3.appendChild(selo);
+    } else {
+      const a = document.createElement('a');
+      a.className = 'principal'; a.href = s.url; a.textContent = s.nome;
+      if (externo) { a.target = '_blank'; a.rel = 'noopener'; }
+      h3.appendChild(a);
+      h3.insertAdjacentHTML('beforeend', SETA);
+    }
+    card.querySelector('.resumo').textContent = s.resumo;
+    card.querySelector('.detalhe').textContent = s.detalhe;
+    if (s.extra) {
+      const b = document.createElement('a');
+      b.className = 'extra'; b.href = s.extra.url; b.textContent = s.extra.texto;
+      card.appendChild(b);
+    }
+    return li;
+  }
+
+  SISTEMAS.forEach((s, i) => document.getElementById('sistemas').appendChild(cartao(s, i)));
+  ARTEFATOS.forEach((s, i) => document.getElementById('artefatos').appendChild(cartao(s, i + SISTEMAS.length)));
+
+  document.getElementById('hoje').textContent = new Date().toLocaleDateString('pt-BR', {
+    weekday: 'long', day: 'numeric', month: 'long'
+  });
 </script>
 </body>
 </html>
